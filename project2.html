@@ -13,13 +13,13 @@
 
     <script type="text/javascript">
 
-    d3.csv("./data/NCWIT_DataV2_RawData.csv", function (data) {
-        console.log(data)});
+    d3.csv("1.csv", function (data) {
+        console.log(data);
 
            // if (error) throw error;
 
            // First, we will create some constants to define non-data-related parts of the visualization
-           /*
+
            var w = 700; // Width of our visualization
            var h = 500; // Height of our visualization
            var xOffset = 40; // Space for x-axis labels
@@ -43,7 +43,7 @@
        // append the svg obgect to the body of the page
        // appends a 'group' element to 'svg'
          // moves the 'group' element to the top left margin
-           var svg = d3.select("#partTwo").append("svg")
+           var svg = d3.select("#partOne").append("svg")
                      .attr("width", width + margin.left+margin.right)
                      .attr("height", height + margin.top + margin.bottom)
                      .append("g")
@@ -87,17 +87,16 @@
                      var xLabel = svg.append("text")
                                      .attr("class", "label")
                                      .text(xVal)
-                                     .attr("Enroll, Female: Avg. ACT Math Score (Enrl F)",width -20)
-                                     .attr("Enroll, Male: Avg. ACT Math Score (Enrl M)", height -10);
+                                     .attr("Enroll, Female: Avg. ACT Math Score (Enrl F)",width -50);
+
                      var yLabel = svg.append("text")
                                      .attr("class", "label")
                                      .text(yVal)
                                      .attr("transform","rotate(90)")
-                                     .attr("text-anchor", "start");
-
+                                     .attr("text-anchor", "start")
+                                     .attr("Enroll, Male: Avg. ACT Math Score (Enrl M)", height -40);
            });
 
-*/
     </script>
   </body>
 </html>
