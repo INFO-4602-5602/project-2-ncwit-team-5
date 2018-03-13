@@ -8,9 +8,27 @@
 
   <body>
     <script type="text/javascript">
-      d3.csv("./NCWIT_DataV2_RawData.csv", function(data){
+      d3.csv("./NCWIT_DataV2_RawData.csv", function(error,data){
         console.log(data);
         checkDataset(data);
+
+        if (error) throw error;
+
+        var w = 700;
+        var h = 500;
+        var xOffset = 40;
+        var yOffset = 100;
+        var margin = 10;
+        var vals = ['x','y'];
+        var xVal = vals[0];
+        var yVal = vals[1];
+
+        var margin = {top:20, right: 20, bottom: 30, left: 50};
+        var width = 960- margin.left - margin.right;
+        var height = 500 - margin.top -margin.bottom;
+
+        var x = d3.scaleLinear().range([0, width]);
+        var y = d3.scaleLinear().range([height,0]);
       });
     </script>
   </body>
