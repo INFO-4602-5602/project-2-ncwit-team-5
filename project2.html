@@ -87,15 +87,37 @@
                      var xLabel = svg.append("text")
                                      .attr("class", "label")
                                      .text(xVal)
-                                     .attr("Enroll, Female: Avg. ACT Math Score (Enrl F)",width -50);
-
+                                     .attr("Enroll, Female: Avg. ACT Math Score (Enrl F)",width -300)
+                                     .attr("Enroll, Male: Avg. ACT Math Score (Enrl M)", height -100);
                      var yLabel = svg.append("text")
                                      .attr("class", "label")
                                      .text(yVal)
-                                     .attr("transform","rotate(90)")
-                                     .attr("text-anchor", "start")
-                                     .attr("Enroll, Male: Avg. ACT Math Score (Enrl M)", height -40);
+                                     /*.attr("transform","rotate(90)")*/
+                                     .attr("text-anchor", "start");
+
+                                     d3.selectAll('circle').on('mouseover',function(){  // changes color when hovering
+                                          var cir = d3.select(this);
+                                          cir.style('fill','green')
+                                             .transition()
+                                             .attr('r',8)
+                                          cir.append('svg:title') //tooltip
+                                             .text(function(d) { return "X: "+ d['Enroll, Female: Avg. ACT Math Score (Enrl F)'] + " " + "Y: " + d['Enroll, Male: Avg. ACT Math Score (Enrl M)']; });
+                                      })
+                                      // test for print x and y label
+
+                                      .on('mouseout',function(){  // color changes back if mouse is out
+                                          var cir = d3.select(this);
+                                          cir.transition()
+                                              .duration(500)
+                                              .style("fill","red")
+                                              .attr('r',5)
+                                          d3.select("#eText").remove();
+                                      })
+
+
            });
+
+
 
     </script>
   </body>
