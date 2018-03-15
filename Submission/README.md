@@ -14,7 +14,7 @@ Project 2 finished work:
   (d).Style: Keep the style consistent across all your views, with an eye towards intelligently applying visual design.
 
 
-The first visualization, we use python3 do data clean(Jupyter). The file name is py.ipynb in the data process folder. We extracted “Enroll, Female: Average ACT Math Score” and “Enroll, Male: Average ACT Math Score”. The code is:
+The first visualization, we use python3 do data clean(Jupyter) and use D3 show the graph. The file name is py.ipynb in the data process folder. We extracted “Enroll, Female: Average ACT Math Score” and “Enroll, Male: Average ACT Math Score”.Then drop the miss value. The code is:
 
 df.dropna(subset=['Enroll, Female: Avg. ACT Math Score (Enrl F)'], inplace = True)
 
@@ -37,7 +37,7 @@ Interactions:
    (c). We compute and visualize a line of fit on the scatterplot.
     
     
-The second visualization, we use python3 do data clean(Jupyter). The file name is Project-2-Z in data process folder. We extracted “Enroll, Female: Average HS GPA (Enrl F)”, “Enroll, Male: Average HS GPA (Enrl M)” and “School Year”. This part code is:
+The second visualization, we use python3 do data clean(Jupyter) and use D3 show the graph. The file name is Project-2-Z in data process folder. We extracted “Enroll, Female: Average HS GPA (Enrl F)”, “Enroll, Male: Average HS GPA (Enrl M)” and “School Year”. Then drop the miss value. This part code is:
 
 df.dropna(subset=['Enroll, Female: Average HS GPA (Enrl F)'], inplace = True)
 
@@ -70,7 +70,7 @@ Interactions:
    (b). We create a tooltip that shows the x- and y-value of each point when you hover over a point.
    
 
-The third visualization, we use python3 do data clean(Jupyter), the file name is yifan.ipynb in data process folder. We extracted “Major Program Name” and “Totals, Male: Total Declared Majors (Tot. M)”. This part code is:
+The third visualization, we use python3 do data clean(Jupyter) and use D3 show the graph. The file name is yifan.ipynb in data process folder. We extracted “Major Program Name” and “Totals, Male: Total Declared Majors (Tot. M)”. Then drop the miss value. This part code is:
 
 MAJOR = data.groupby('Major Program Name')['Totals, Male: Total Declared Majors (Tot. M)'].count()
 
@@ -87,7 +87,7 @@ Interactions:
    (b). We create a tooltip that shows the x- and y-value of each point when you hover over a bar.
    
 
-The fourth visualization, we use python3 do data clean(Jupyter), the file name is Age.ipynb in data process folder. We extracted “School Year” and “Enroll, Female: Average Age (Enrl F)”. This part code is:
+The fourth visualization, we use python3 do data clean(Jupyter) and use D3 show the graph. The file name is Age.ipynb in data process folder. We extracted “School Year” and “Enroll, Female: Average Age (Enrl F)”. Then drop the miss value. This part code is:
 
 df.dropna(subset=['Enroll, Female: Average Age (Enrl F)'], inplace = True)
 
@@ -112,7 +112,7 @@ Interactions:
    (b). We create a tooltip that shows the x- and y-value of each point when you hover over a point.
 
 
-The fifth visualization, we use python3 do data clean(Jupyter). The file name is yifan.ipynb in data process folder. We extracted “Enroll, Female: Avg. SAT Math Score (Enrl F)” and “Enroll, Male: Avg. SAT Math Score (Enrl M)”, and drop the miss value. The code is:
+The fifth visualization, we use python3 do data clean(Jupyter) and use D3 show the graph.The file name is yifan.ipynb in data process folder. We extracted “Enroll, Female: Avg. SAT Math Score (Enrl F)” and “Enroll, Male: Avg. SAT Math Score (Enrl M)”, and drop the miss value. The code is:
 
 SAT_RAW = data[['Enroll, Female: Avg. SAT Math Score (Enrl F)', 'Enroll, Male: Avg. SAT Math Score (Enrl M)']]
 
