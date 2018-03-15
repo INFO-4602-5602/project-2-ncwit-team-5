@@ -1,3 +1,19 @@
+Project 2 finished work:
+
+1.Our team finished minimum requirements.
+
+2.Above and Beyond part, our team finished:
+
+  (a). Dashboarding: Show all three visualizations as part of the same screen.
+  
+  (b). Added Visualizations: Provide more than three visualizations.
+  
+  (c).Missing Data: Not all rows have data for all columns. Design ways of handling missing data intelligently.
+      We use python3 did data clean and drop missing data.
+      
+  (d).Style: Keep the style consistent across all your views, with an eye towards intelligently applying visual design.
+
+
 The first visualization, we use python3 do data clean(Jupyter). The file name is py.ipynb in the data process folder. We extracted “Enroll, Female: Average ACT Math Score” and “Enroll, Male: Average ACT Math Score”. The code is:
 
 df.dropna(subset=['Enroll, Female: Avg. ACT Math Score (Enrl F)'], inplace = True)
@@ -12,6 +28,15 @@ df.to_csv("1.csv",index=False)
 
 In this graph we read dataset from “1.csv” in data folder. we want to find what kind of correlation about “Enroll, Female: Average ACT Math Score” and “Enroll, Male: Average ACT Math Score”. Our visualization X axis represent “Enroll, Female: Average ACT Math Score”, Y axis “Enroll, Male: Average ACT Math Score”. Through our graph, we can see. The best fit line closes to a straight line, which has a positive gradient. That means the two data have positive correlation. Normally, we think maybe male ACT math score better than female. However, through our graph, we can see when one variable increases the other increases. That means male and female do not have distinction.
 
+Interactions:
+
+   (a). When you hover over a point, change it’s color and size. when you mouse out change it back.
+   
+   (b). We create a tooltip that shows the x- and y-value of each point when you hover over a point.
+   
+   (c). We compute and visualize a line of fit on the scatterplot.
+    
+    
 The second visualization, we use python3 do data clean(Jupyter). The file name is Project-2-Z in data process folder. We extracted “Enroll, Female: Average HS GPA (Enrl F)”, “Enroll, Male: Average HS GPA (Enrl M)” and “School Year”. This part code is:
 
 df.dropna(subset=['Enroll, Female: Average HS GPA (Enrl F)'], inplace = True)
@@ -38,6 +63,13 @@ df.to_csv("2.csv")
 
 In this graph we read dataset from “2.csv” in data folder. we want to know the average high school GPA trend from 2003 to 2016, the X axis represent year (from 2003 to 2016) and the Y axis represent average high school GPA. Through our graph, we can see the min value is 3.49 on 2005, the max value is 3.757 on 2016 and this line trend is increasing.
 
+Interactions:
+
+   (a). When you hover over a point, change it’s color and size. when you mouse out change it back.
+   
+   (b). We create a tooltip that shows the x- and y-value of each point when you hover over a point.
+   
+
 The third visualization, we use python3 do data clean(Jupyter), the file name is yifan.ipynb in data process folder. We extracted “Major Program Name” and “Totals, Male: Total Declared Majors (Tot. M)”. This part code is:
 
 MAJOR = data.groupby('Major Program Name')['Totals, Male: Total Declared Majors (Tot. M)'].count()
@@ -47,6 +79,13 @@ Then we save it to .csv file, the code is:
 MAJOR.to_csv('Major.csv')
 
 In this graph we read dataset from “Major.csv” in data folder. We want to show the total male students number in different major. This bar chart X axis is different majors, the Y axis is “Totals, Male: Total Declared Majors (Tot. M)”, through this graph we can see the most popular major for male students is computer science. 
+
+Interactions:
+
+   (a). When you hover over a bar, highlight the bar. when you mouse out change it back.
+   
+   (b). We create a tooltip that shows the x- and y-value of each point when you hover over a bar.
+   
 
 The fourth visualization, we use python3 do data clean(Jupyter), the file name is Age.ipynb in data process folder. We extracted “School Year” and “Enroll, Female: Average Age (Enrl F)”. This part code is:
 
@@ -64,7 +103,14 @@ df = df.sort_values(by="School Year", ascending=True)
 
 df.to_csv("age.csv", index = False)
 
-In this graph, we read dataset from “age.csv” in data folder. We want to show the age range from 2003 to 2016. The X axis is "School Year", the Y axis is “Enroll, Female: Average Age (Enrl F)”. Through we can see different age range for each year and we found the normal age difference is about 15 in each year. The max difference value happened in 2012.
+In this graph, we read dataset from “age.csv” in data folder. We want to show the age range from 2003 to 2016. The X axis is "School Year", the Y axis is “Enroll, Female: Average Age (Enrl F)”. we design this graph because the age range coulde tell us how many different stages students. Through this graph we can see different age range for each year and we found the normal age difference is about 15 in each year. The max difference value happened in 2012.
+
+Interactions:
+
+   (a). When you hover over a point, change it’s color and size. when you mouse out change it back.
+   
+   (b). We create a tooltip that shows the x- and y-value of each point when you hover over a point.
+
 
 The fifth visualization, we use python3 do data clean(Jupyter). The file name is yifan.ipynb in data process folder. We extracted “Enroll, Female: Avg. SAT Math Score (Enrl F)” and “Enroll, Male: Avg. SAT Math Score (Enrl M)”, and drop the miss value. The code is:
 
@@ -77,6 +123,13 @@ Then we put the two attributes in one table and save it to “SAT.csv”. the co
 SAT.to_csv('SAT.csv')
 
 In this graph we read dataset from “SAT.csv” in data folder. We want to find what kind of correlation about “Enroll, Female: Avg. SAT Math Score” and “Enroll, Male: Avg. SAT Math Score”. Our visualization X axis represent “Enroll, Female: Avg. SAT Math Score”, Y axis “Enroll, Male: Average SAT Math Score”. Through our graph, we can see. The best fit line closes to a straight line, which has a positive gradient. That means the two data have positive correlation. Normally, we think maybe male SAT math score better than female. However, through our graph, we can see when one variable increases the other increases. That means male and female do not have distinction.
+Interactions:
+
+   (a). When you hover over a point, change it’s color and size. when you mouse out change it back.
+   
+   (b). We create a tooltip that shows the x- and y-value of each point when you hover over a point.
+   
+   (c). We compute and visualize a line of fit on the scatterplot.
 
 Our team role:
 Zhixin Chang:
