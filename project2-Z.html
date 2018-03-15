@@ -1,0 +1,237 @@
+<html>
+  <head>
+    <title>Project 2</title>
+    <link rel="stylesheet" type="text/css" href="project2.css"></link>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+        <script src="https://d3js.org/d3.v4.min.js"></script>
+  </head>
+
+  <body>
+           <div id="partTwo">
+                 <h1>Part Two: </h1>
+         	</div>
+
+          <script type="text/javascript">
+          // Get the data
+          d3.csv("2.csv", function (error, data) {
+
+              if (error) throw error;
+
+                 // First, we will create some constants to define non-data-related parts of the visualization
+                 var w = 700; // Width of our visualization
+                 var h = 500; // Height of our visualization
+                 var xOffset = 40; // Space for x-axis labels
+                 var yOffset = 100; // Space for y-axis labels
+                 var margin = 10; // Margin around visualization
+                 var vals = ['School Year','Average HS GPA']; // List of data attributes
+                 var xVal = vals[0]; // Value to plot on x-axis
+                 var yVal = vals[1]; // Value to plot on y-axis
+
+
+                 // set the dimensions and margins of the graph
+                 var margin = {top:20, right: 20, bottom: 30, left: 50};
+                 var width = 960- margin.left - margin.right;
+                 var height = 500 - margin.top -margin.bottom;
+
+                 // set the ranges
+                 var x = d3.scaleLinear().range([0, width]);
+                 var y = d3.scaleLinear().range([height,0]);
+
+
+                 //define the line
+                 var valueline = d3.line()
+                                   .x(function(d) {return x(d[xVal]);})
+                                   .y(function(d) {return y(d[yVal]);});
+
+             // append the svg obgect to the body of the page
+             // appends a 'group' element to 'svg'
+               // moves the 'group' element to the top left margin
+                 var svg = d3.select("#partTwo").append("svg")
+                           .attr("width", width + margin.left+margin.right)
+                           .attr("height", height + margin.top + margin.bottom)
+                           .append("g")
+                           .attr("transform", "translate("+margin.left+","+margin.top+")");
+
+                     // Scale the range of the data
+                x.domain([d3.min(data, function(d) { return parseFloat(d[xVal]); }),
+                          d3.max(data, function(d) { return parseFloat(d[xVal]); })+1]);
+
+                y.domain([d3.min(data, function(d) { return parseFloat(d[yVal]); }),
+                          d3.max(data, function(d) { return parseFloat(d[yVal]); })]);
+
+
+                //data.sort(function(x, y) {return d3.descending(x[xVal], y[xVal]);});
+                /*data.sort(function(a,b) {return a.x-b.x});*/
+
+                  //Add the line
+                   svg.append("path")
+                      .data([data])
+                      .attr("fill", "none")
+                      .attr("stroke", "steelblue")
+                      .attr("stroke-linejoin", "round")
+                      .attr("stroke-linecap", "round")
+                      .attr("stroke-width", 1.5)
+                      .attr("d", valueline(data));
+
+
+                       // Add the scatterplot points
+                       svg.selectAll("circle")
+                          .data(data)
+                          .enter()
+                          .append("circle")
+                          .attr("r", 3)
+                          .attr("cx", function(d){return x(d[xVal]);})
+                          .attr("cy", function(d){return y(d[yVal]);})
+                          .style('fill','red')
+                          .attr('r', 0)
+                          .transition()
+                          .duration(500)
+                          .attr('r', 5);
+
+
+                           // Add the X Axis
+                           svg.append("g")
+                              .attr("transform","translate(0," + height+")")
+                              .call(d3.axisBottom(x));
+
+                            // Add the Y Axis
+                            svg.append("g")
+                               //.attr("transform","translate(0," + height+")")
+                               .call(d3.axisLeft(y));
+
+                           //Add text labels
+                           var xLabel = svg.append("text")
+                                           .attr("class", "label")
+                                           .text(xVal)
+                                           .attr("x",width -30)
+                                           .attr("y", height-10);
+                           var yLabel = svg.append("text")
+                                           .attr("class", "label")
+                                           .text(yVal)
+                                           /*.attr("transform","rotate(90)")*/
+                                           .attr("text-anchor", "start")
+                                           .attr("x",width -830)
+                                           .attr("transform","rotate(90)");
+
+                                           //hovering
+                                           // changes color when hovering
+                                           d3.selectAll('circle').on('mouseover', function() {
+                                           var cir = d3.select(this);
+                                           cir.style('fill', 'green')
+                                              .transition()
+                                              .attr('r', 8)
+                                           cir.append('svg:title') //tooltip
+                                              .text(function(d) {
+                                              return "X: " + d['School Year'] + " " + "Y: " + d['Average HS GPA'];
+                                          });
+                                          })
+                                          // color changes back if mouse is out
+                                          .on('mouseout', function() {
+                                          var cir = d3.select(this);
+                                          cir.transition()
+                                             .duration(500)
+                                             .style("fill", "red")
+                                             .attr('r', 5)
+                                          d3.select("#eText").remove();
+                                          });
+
+});
+
+</script>
+
+<div id="partThree">
+      <h1>Part Three: </h1>
+</div>
+
+<script type="text/javascript">
+
+d3.csv("age.csv", function (data) {
+    console.log(data);
+
+       // if (error) throw error;
+
+       // First, we will create some constants to define non-data-related parts of the visualization
+
+       var w = 700; // Width of our visualization
+       var h = 500; // Height of our visualization
+       var xOffset = 40; // Space for x-axis labels
+       var yOffset = 100; // Space for y-axis labels
+       var margin = 10; // Margin around visualization
+       var vals = ['School Year','Enroll, Female: Average Age (Enrl F)']; // List of data attributes
+       var xVal = vals[0]; // Value to plot on x-axis
+       var yVal = vals[1]; // Value to plot on y-axis
+
+
+       // set the dimensions and margins of the graph
+       var margin = {top:20, right: 20, bottom: 30, left: 50};
+       var width = 960- margin.left - margin.right;
+       var height = 500 - margin.top -margin.bottom;
+
+       // set the ranges
+       var x = d3.scaleLinear().range([0, width]);
+       var y = d3.scaleLinear().range([height,0]);
+
+
+   // append the svg obgect to the body of the page
+   // appends a 'group' element to 'svg'
+     // moves the 'group' element to the top left margin
+       var svg = d3.select("#partThree").append("svg")
+                 .attr("width", width + margin.left+margin.right)
+                 .attr("height", height + margin.top + margin.bottom)
+                 .append("g")
+                 .attr("transform", "translate("+margin.left+","+margin.top+")");
+
+
+      x.domain([d3.min(data, function(d) { return parseFloat(d[xVal]); }),
+                d3.max(data, function(d) { return parseFloat(d[xVal]); })]);
+
+      y.domain([d3.min(data, function(d) { return parseFloat(d[yVal]); }),
+              d3.max(data, function(d) { return parseFloat(d[yVal]); })]);
+
+      //x.domain(0,d3.max(data, function(d) { return parseFloat(d[xVal]); }));
+      //y.domain(0,d3.max(data, function(d) { return parseFloat(d[yVal]); }));
+             // Add the scatterplot points
+             svg.selectAll("circle")
+                .data(data)
+                .enter()
+                .append("circle")
+                .attr("r", 3)
+                .attr("cx", function(d){return x(d[xVal]);})
+                .attr("cy", function(d){return y(d[yVal]);})
+                .style('fill','red')
+                .attr('r', 0)
+                .transition()
+                .duration(500)
+                .attr('r', 5);
+
+
+                 // Add the X Axis
+                 svg.append("g")
+                    .attr("transform","translate(0," + height+")")
+                    .call(d3.axisBottom(x));
+
+                  // Add the Y Axis
+                  svg.append("g")
+                     //.attr("transform","translate(0," + height+")")
+                     .call(d3.axisLeft(y));
+
+                 //Add text labels
+                 var xLabel = svg.append("text")
+                                 .attr("class", "label")
+                                 .text(xVal)
+                                 .attr("x",width -30)
+                                 .attr("y", height-10);
+
+                 var yLabel = svg.append("text")
+                                 .attr("class", "label")
+                                 .text(yVal)
+                                 //.attr("transform","rotate(90)")
+                                 .attr("text-anchor", "start")
+                                 .attr("x",width -750)
+                                 //.attr("transform","rotate(90)");
+       });
+
+    </script>
+
+  </body>
+</html>

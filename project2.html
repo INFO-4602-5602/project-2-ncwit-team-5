@@ -1,7 +1,7 @@
 <html>
   <head>
     <title>Project 2</title>
-    <link rel="stylesheet" type="text/css" href="project1.css"></link>
+    <link rel="stylesheet" type="text/css" href="project2.css"></link>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
         <script src="https://d3js.org/d3.v4.min.js"></script>
   </head>
@@ -10,6 +10,9 @@
     <div id="partOne">
           <h1>Part One: </h1>
   	</div>
+    <div id="partTwo">
+          <h1>Part Two: </h1>
+    </div>
 
     <script type="text/javascript">
 
@@ -119,6 +122,200 @@
 
 
 
+<<<<<<< HEAD
+=======
+           // following is graph about female and male GPA comparison
+
+           d3.csv("SAT.csv", function (data) {
+               // console.log(data);
+
+                  // if (error) throw error;
+
+                  // First, we will create some constants to define non-data-related parts of the visualization
+
+                  var w = 700; // Width of our visualization
+                  var h = 500; // Height of our visualization
+                  var xOffset = 40; // Space for x-axis labels
+                  var yOffset = 100; // Space for y-axis labels
+                  var margin = 10; // Margin around visualization
+                  var vals = ['Enroll, Female: Avg. SAT Math Score (Enrl F)','Enroll, Male: Avg. SAT Math Score (Enrl M)']; // List of data attributes
+                  var xVal = vals[0]; // Value to plot on x-axis
+                  var yVal = vals[1]; // Value to plot on y-axis
+
+
+                  // set the dimensions and margins of the graph
+                  var margin = {top:20, right: 20, bottom: 30, left: 50};
+                  var width = 960- margin.left - margin.right;
+                  var height = 500 - margin.top -margin.bottom;
+
+                  // set the ranges
+                  var x = d3.scaleLinear().range([0, width]);
+                  var y = d3.scaleLinear().range([height,0]);
+
+
+              // append the svg obgect to the body of the page
+              // appends a 'group' element to 'svg'
+                // moves the 'group' element to the top left margin
+                  var svg = d3.select("#partTwo").append("svg")
+                            .attr("width", width + margin.left+margin.right)
+                            .attr("height", height + margin.top + margin.bottom)
+                            .append("g")
+                            .attr("transform", "translate("+margin.left+","+margin.top+")")
+
+
+                 x.domain([d3.min(data, function(d) { return parseFloat(d[xVal]); }),
+                           d3.max(data, function(d) { return parseFloat(d[xVal]); })]);
+
+                 y.domain([d3.min(data, function(d) { return parseFloat(d[yVal]); }),
+                         d3.max(data, function(d) { return parseFloat(d[yVal]); })]);
+
+                 //x.domain(0,d3.max(data, function(d) { return parseFloat(d[xVal]); }));
+                 //y.domain(0,d3.max(data, function(d) { return parseFloat(d[yVal]); }));
+
+
+                 // data.sort(function(a,b) {return a.x-b.x});
+
+
+
+
+                        // Add the scatterplot points
+                        svg.selectAll("circle")
+                           .data(data)
+                           .enter()
+                           .append("circle")
+                           .attr("r", 3)
+                           .attr("cx", function(d){return x(d[xVal]);})
+                           .attr("cy", function(d){return y(d[yVal]);})
+                           .style('fill','red')
+                           .attr('r', 0)
+                           .transition()
+                           .duration(500)
+                           .attr('r', 5);
+
+
+
+
+                            // Add the X Axis
+                            svg.append("g")
+                               .attr("transform","translate(0," + height+")")
+                               .call(d3.axisBottom(x));
+
+                             // Add the Y Axis
+                             svg.append("g")
+                                //.attr("transform","translate(0," + height+")")
+                                .call(d3.axisLeft(y));
+
+
+
+
+                            // Add text labels
+                            var xLabel = svg.append("text")
+                                            .attr("class", "label")
+                                            .text(xVal)
+                                            .attr("x",width -150)
+                                            .attr("y", height -10);
+
+
+                            var yLabel = svg.append("text")
+                                            .attr("class", "label")
+                                            .text(yVal)
+                                            .attr("x",width -780)
+                                            .attr("y", height -458)
+                                            .attr("transform","rotate(0)")
+                                            .attr("text-anchor", "start");
+                                            // .attr("x",width -180)
+                                            // .attr("y", height -10);
+                                            // .attr("Enroll, Male: Avg. ACT Math Score (Enrl M)", height -40);
+
+                                       //hovering
+                                      d3.selectAll('circle').on('mouseover',function(){  // changes color when hovering
+                                           var cir = d3.select(this);
+                                           cir.style('fill','green')
+                                              .transition()
+                                              .attr('r',8)
+                                           cir.append('svg:title') //tooltip
+                                              .text(function(d) { return "X: "+ d['x'] + " " + "Y: " + d['y']; });
+                                       })
+                                       // test for print x and y label
+                                       d3.selectAll('circle').on('click',function(d){  // changes color when hovering
+                                           var cirLabel = svg.append("text")
+                                               .attr('class', 'label')
+                                               .attr("id","eText")
+                                               .attr('x', xOffset/2 +310)
+                                               .attr('y', h/2 - 220)
+                                               .transition()
+                                               .text("coordinates: "+d.x+ " , "+ d.y);    //click the point and show coordinates.
+                                       })
+                                       .on('mouseout',function(){  // color changes back if mouse is out
+                                           var cir = d3.select(this);
+                                           cir.transition()
+                                               .duration(500)
+                                               .style("fill","red")
+                                               .attr('r',5)
+                                           d3.select("#eText").remove();
+                                       })
+
+                  });
+
+
+                  // line graph
+                  d3.csv("FSAT.csv", function (data) {
+                    var svg = d3.select("svg"),
+                        margin = {top: 20, right: 20, bottom: 30, left: 50},
+                        width = +svg.attr("width") - margin.left - margin.right,
+                        height = +svg.attr("height") - margin.top - margin.bottom,
+                        g = svg.append("g").attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
+                    var parseTime = d3.timeParse("%d-%b-%y");
+
+                    var x = d3.scaleTime()
+                        .rangeRound([0, width]);
+
+                    var y = d3.scaleLinear()
+                        .rangeRound([height, 0]);
+
+                    var line = d3.line()
+                        .x(function(d) { return x(d.date); })
+                        .y(function(d) { return y(d.close); });
+
+                    d3.tsv("data.tsv", function(d) {
+                      d.date = parseTime(d.date);
+                      d.close = +d.close;
+                      return d;
+                    }, function(error, data) {
+                      if (error) throw error;
+
+                      x.domain(d3.extent(data, function(d) { return d.date; }));
+                      y.domain(d3.extent(data, function(d) { return d.close; }));
+
+                      g.append("g")
+                          .attr("transform", "translate(0," + height + ")")
+                          .call(d3.axisBottom(x))
+                        .select(".domain")
+                          .remove();
+
+                      g.append("g")
+                          .call(d3.axisLeft(y))
+                        .append("text")
+                          .attr("fill", "#000")
+                          .attr("transform", "rotate(-90)")
+                          .attr("y", 6)
+                          .attr("dy", "0.71em")
+                          .attr("text-anchor", "end")
+                          .text("Price ($)");
+
+                      g.append("path")
+                          .datum(data)
+                          .attr("fill", "none")
+                          .attr("stroke", "steelblue")
+                          .attr("stroke-linejoin", "round")
+                          .attr("stroke-linecap", "round")
+                          .attr("stroke-width", 1.5)
+                          .attr("d", line);
+                    });
+                  });
+
+>>>>>>> c84acedc6aa326238d22e200688bbb933c1ff954
     </script>
   </body>
 </html>
