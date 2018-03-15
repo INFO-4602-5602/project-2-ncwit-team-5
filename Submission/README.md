@@ -78,7 +78,7 @@ Then we save it to .csv file, the code is:
 
 MAJOR.to_csv('Major.csv')
 
-In this graph we read dataset from “Major.csv” in data folder. We want to show the total male students number in different major. This bar chart X axis is different majors, the Y axis is “Totals, Male: Total Declared Majors (Tot. M)”, through this graph we can see the most popular major for male students is computer science. 
+In this graph we read dataset from “Major.csv” in data folder. We want to show the total male students number in different major. This bar chart X axis is different majors, the Y axis is “Totals, Male: Total Declared Majors (Tot. M)”.We design this graph because we want to now what major is the most favorite major for male student. Through this graph we can see the most popular major for male students is computer science. More htna one thousand male students choose this major.
 
 Interactions:
 
@@ -123,6 +123,7 @@ Then we put the two attributes in one table and save it to “SAT.csv”. the co
 SAT.to_csv('SAT.csv')
 
 In this graph we read dataset from “SAT.csv” in data folder. We want to find what kind of correlation about “Enroll, Female: Avg. SAT Math Score” and “Enroll, Male: Avg. SAT Math Score”. Our visualization X axis represent “Enroll, Female: Avg. SAT Math Score”, Y axis “Enroll, Male: Average SAT Math Score”. Through our graph, we can see. The best fit line closes to a straight line, which has a positive gradient. That means the two data have positive correlation. Normally, we think maybe male SAT math score better than female. However, through our graph, we can see when one variable increases the other increases. That means male and female do not have distinction.
+
 Interactions:
 
    (a). When you hover over a point, change it’s color and size. when you mouse out change it back.
@@ -132,30 +133,51 @@ Interactions:
    (c). We compute and visualize a line of fit on the scatterplot.
 
 Our team role:
+
 Zhixin Chang:
+
 Team leader.
+
 Work with Yifan to generate required data for the third main bar chart visualizations by Python
+
 Work with Yifan to design and draw the second bar chart visualizations on D3
+
 Debug D3 and python problems from others.
+
 Design the web page on D3
+
 Integrate codes and data
 
 Peng Yan:
+
 Debug D3 and python problems from others.
+
 Creating the styles for the HTML file.
+
 Generate required data for the first main scatter plot visualizations
+
 Design and draw the first scatter plot visualizations on D3
+
 Writing the first, second, and forth part of the readme
 
 Zening Li:
+
 Generate required data for the second main line plot visualizations by Python
+
 Generate required data for the average age and year scatter plot visualizations by Python
+
 Design and draw the second line plot visualizations on D3
+
 Design and draw the average age and year scatter plot visualizations on D3
+
 Writing the third part of the readme
 
 Yifan Li:
+
 Work with Zhixin to generate required data for the third main bar chart visualizations by Python
+
 Generate required data for the scatter plot visualizations by Python
+
 Work with Zhixin to design and draw the second bar chart visualizations on D3
+
 Design and draw the scatter plot visualizations on D3
