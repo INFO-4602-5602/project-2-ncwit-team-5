@@ -219,14 +219,16 @@ d3.csv("age.csv", function (data) {
                  var xLabel = svg.append("text")
                                  .attr("class", "label")
                                  .text(xVal)
-                                 .attr("x",width -50);
+                                 .attr("x",width -30)
+                                 .attr("y", height-10);
 
                  var yLabel = svg.append("text")
                                  .attr("class", "label")
                                  .text(yVal)
-                                 .attr("transform","rotate(90)")
+                                 //.attr("transform","rotate(90)")
                                  .attr("text-anchor", "start")
-                                 .attr("y", height -40);
+                                 .attr("x",width -750)
+                                 //.attr("transform","rotate(90)");
        });
 
     </script>
