@@ -1,0 +1,884 @@
+<html>
+
+<head>
+    <title>Project 2</title>
+    <link rel="stylesheet" type="text/css" href="project2.css"></link>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    <script src="https://d3js.org/d3.v4.min.js"></script>
+</head>
+
+<body>
+    <div id="partOne">
+        <h1>Part One: </h1>
+    </div>
+
+    <script type="text/javascript">
+        d3.csv("data/1.csv", function(error, data) {
+            console.log(data);
+
+            if (error) throw error;
+
+            // First, we will create some constants to define non-data-related parts of the visualization
+
+            var w = 700; // Width of our visualization
+            var h = 500; // Height of our visualization
+            var xOffset = 40; // Space for x-axis labels
+            var yOffset = 100; // Space for y-axis labels
+            var margin = 10; // Margin around visualization
+            var vals = ['Enroll, Female: Avg. ACT Math Score (Enrl F)', 'Enroll, Male: Avg. ACT Math Score (Enrl M)']; // List of data attributes
+            var xVal = vals[0]; // Value to plot on x-axis
+            var yVal = vals[1]; // Value to plot on y-axis
+
+
+            // set the dimensions and margins of the graph
+            var margin = {
+                top: 20,
+                right: 20,
+                bottom: 30,
+                left: 50
+            };
+            var width = 960 - margin.left - margin.right;
+            var height = 500 - margin.top - margin.bottom;
+
+            // set the ranges
+            var x = d3.scaleLinear().range([0, width]);
+            var y = d3.scaleLinear().range([height, 0]);
+
+
+            // append the svg obgect to the body of the page
+            // appends a 'group' element to 'svg'
+            // moves the 'group' element to the top left margin
+            var svg = d3.select("#partOne").append("svg")
+                .attr("width", width + margin.left + margin.right)
+                .attr("height", height + margin.top + margin.bottom)
+                .append("g")
+                .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
+
+            x.domain([d3.min(data, function(d) {
+                    return parseFloat(d[xVal]);
+                }) - 2,
+                d3.max(data, function(d) {
+                    return parseFloat(d[xVal]);
+                })
+            ]);
+
+            y.domain([0,
+                d3.max(data, function(d) {
+                    return parseFloat(d[yVal]);
+                })
+            ]);
+
+            //x.domain(0,d3.max(data, function(d) { return parseFloat(d[xVal]); }));
+            //y.domain(0,d3.max(data, function(d) { return parseFloat(d[yVal]); }));
+            // Add the scatterplot points
+            svg.selectAll("circle")
+                .data(data)
+                .enter()
+                .append("circle")
+                .attr("r", 3)
+                .attr("cx", function(d) {
+                    return x(d[xVal]);
+                })
+                .attr("cy", function(d) {
+                    return y(d[yVal]);
+                })
+                .style('fill', 'red')
+                //                .transition()
+                //                .duration(500)
+                .attr('r', 5)
+                .on('mouseover', function() {
+                    var cir = d3.select(this);
+                    cir.style('fill', 'green')
+                        .transition()
+                        .attr('r', 15)
+                    cir.append('svg:title') //tooltip
+                        .text(function(d) {
+                            return "X: " + d['Enroll, Female: Avg. ACT Math Score (Enrl F)'] + " " + "Y: " + d['Enroll, Male: Avg. ACT Math Score (Enrl M)'];
+                        });
+                })
+                .on('mouseout', function() {
+                    var cir = d3.select(this);
+                    cir.transition()
+                        .duration(500)
+                        .style("fill", "red")
+                        .attr('r', 5)
+                    d3.select("#eText").remove();
+                });
+
+
+
+            //            //hovering
+            //            // changes color when hovering
+            //            d3.selectAll('circle')
+            //                // color changes back if mouse is out
+            //            .on('mouseover', function() {
+            //                    var cir = d3.select(this);
+            //                    cir.style('fill', 'green')
+            //                        .transition()
+            //                        .attr('r', 15)
+            //                    cir.append('svg:title') //tooltip
+            //                        .text(function(d) {
+            //                            return "X: " + d['Enroll, Female: Avg. ACT Math Score (Enrl F)'] + " " + "Y: " + d['Enroll, Male: Avg. ACT Math Score (Enrl M)'];
+            //                        });
+            //                })
+            //
+            //                .on('mouseout', function() {
+            //                    var cir = d3.select(this);
+            //                    cir.transition()
+            //                        .duration(500)
+            //                        .style("fill", "red")
+            //                        .attr('r', 5)
+            //                    d3.select("#eText").remove();
+            //                });
+
+
+            // Add the X Axis
+            svg.append("g")
+                .attr("transform", "translate(0," + height + ")")
+                .call(d3.axisBottom(x));
+
+            // Add the Y Axis
+            svg.append("g")
+                //.attr("transform","translate(0," + height+")")
+                .call(d3.axisLeft(y));
+
+            //Add text labels
+            //            var xLabel = svg.append("text")
+            //                .attr("class", "label")
+            //                .text(xVal)
+            //                .attr("Enroll, Female: Avg. ACT Math Score (Enrl F)", width - 50);
+            //
+            //            var yLabel = svg.append("text")
+            //                .attr("class", "label")
+            //                .text(yVal)
+            //                .attr("transform", "rotate(90)")
+            //                .attr("text-anchor", "start")
+            //                .attr("Enroll, Male: Avg. ACT Math Score (Enrl M)", height - 40);
+            var xLabel = svg.append("text")
+                .attr("class", "label")
+                .text(xVal)
+                .attr("x", width - 150)
+                .attr("y", height - 20);
+
+            var yLabel = svg.append("text")
+                .attr("class", "label")
+                .text(yVal)
+                //                .attr("transform", "rotate(90)")
+                .attr("text-anchor", "start")
+                .attr("x", width - 700);
+
+
+            //regression
+            var y1 = data.map(function(d) {
+                return parseFloat(d[xVal]);
+            });
+
+            var x1 = data.map(function(d) {
+                return parseFloat(d[yVal]);
+            });
+
+
+
+
+
+
+            var lr = {};
+            var n = y1.length;
+            var r = 0;
+            var rpart;
+
+            var xmean = d3.mean(data, function(d) {
+                return d[xVal];
+            });
+
+            //            console.log(xmean);
+            var ymean = d3.mean(data, function(d) {
+                return d[yVal];
+            });
+            var xstd = d3.deviation(data, function(d) {
+                return d[xVal];
+            });
+            var ystd = d3.deviation(data, function(d) {
+                return d[yVal];
+            });
+
+
+
+            for (var i = 0; i < y1.length; i++) {
+
+                rpart = (x1[i] - xmean) * (y1[i] - ymean) / xstd / ystd;
+                var r = r + rpart;
+            }
+            var r1 = r / (y1.length - 1)
+
+            lr['slope'] = r1 * (ystd / xstd);
+            lr['intercept'] = ymean - lr.slope * xmean;
+
+
+
+
+            console.log(lr);
+            var max = d3.max(data, function(d) {
+                return parseFloat(d[xVal]);
+            })
+            var myLine = svg.append("svg:line")
+                .attr("x1", x(0))
+                .attr("y1", y(lr.intercept))
+                .attr("x2", x(max))
+                .attr("y2", y((max * lr.slope) + lr.intercept))
+                .style("stroke", "black");
+        });
+
+    </script>
+
+
+
+
+
+
+    <div id="partTwo">
+        <h1>Part Two: </h1>
+    </div>
+
+    <script type="text/javascript">
+        // Get the data
+        d3.csv("data/2.csv", function(error, data) {
+
+            if (error) throw error;
+
+            // First, we will create some constants to define non-data-related parts of the visualization
+            var w = 700; // Width of our visualization
+            var h = 500; // Height of our visualization
+            var xOffset = 40; // Space for x-axis labels
+            var yOffset = 100; // Space for y-axis labels
+            var margin = 10; // Margin around visualization
+            var vals = ['School Year', 'Average HS GPA']; // List of data attributes
+            var xVal = vals[0]; // Value to plot on x-axis
+            var yVal = vals[1]; // Value to plot on y-axis
+
+
+            // set the dimensions and margins of the graph
+            var margin = {
+                top: 20,
+                right: 20,
+                bottom: 30,
+                left: 50
+            };
+            var width = 960 - margin.left - margin.right;
+            var height = 500 - margin.top - margin.bottom;
+
+            // set the ranges
+            var x = d3.scaleLinear().range([0, width]);
+            var y = d3.scaleLinear().range([height, 0]);
+
+
+            //define the line
+            var valueline = d3.line()
+                .x(function(d) {
+                    return x(d[xVal]);
+                })
+                .y(function(d) {
+                    return y(d[yVal]);
+                });
+
+            // append the svg obgect to the body of the page
+            // appends a 'group' element to 'svg'
+            // moves the 'group' element to the top left margin
+            var svg = d3.select("#partTwo").append("svg")
+                .attr("width", width + margin.left + margin.right)
+                .attr("height", height + margin.top + margin.bottom)
+                .append("g")
+                .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
+            // Scale the range of the data
+            x.domain([d3.min(data, function(d) {
+                    return parseFloat(d[xVal]);
+                }),
+                d3.max(data, function(d) {
+                    return parseFloat(d[xVal]);
+                }) + 1
+            ]);
+
+            y.domain([0,
+                d3.max(data, function(d) {
+                    return parseFloat(d[yVal]);
+                })
+            ]);
+
+
+            //data.sort(function(x, y) {return d3.descending(x[xVal], y[xVal]);});
+            /*data.sort(function(a,b) {return a.x-b.x});*/
+
+            //Add the line
+            svg.append("path")
+                .data([data])
+                .attr("fill", "none")
+                .attr("stroke", "steelblue")
+                .attr("stroke-linejoin", "round")
+                .attr("stroke-linecap", "round")
+                .attr("stroke-width", 1.5)
+                .attr("d", valueline(data));
+
+
+            // Add the scatterplot points
+            svg.selectAll("circle")
+                .data(data)
+                .enter()
+                .append("circle")
+                .attr("r", 3)
+                .attr("cx", function(d) {
+                    return x(d[xVal]);
+                })
+                .attr("cy", function(d) {
+                    return y(d[yVal]);
+                })
+                .style('fill', 'red')
+                .attr('r', 0)
+                //                .transition()
+                //                .duration(500)
+                .attr('r', 5)
+                .on('mouseover', function() {
+                    var cir = d3.select(this);
+                    cir.style('fill', 'green')
+                        .transition()
+                        .attr('r', 8)
+                    cir.append('svg:title') //tooltip
+                        .text(function(d) {
+                            return "X: " + d['School Year'] + " " + "Y: " + d['Average HS GPA'];
+                        });
+                })
+                // color changes back if mouse is out
+                .on('mouseout', function() {
+                    var cir = d3.select(this);
+                    cir.transition()
+                        .duration(500)
+                        .style("fill", "red")
+                        .attr('r', 5)
+                    d3.select("#eText").remove();
+                });
+
+
+
+            // Add the X Axis
+            svg.append("g")
+                .attr("transform", "translate(0," + height + ")")
+                .call(d3.axisBottom(x));
+
+            // Add the Y Axis
+            svg.append("g")
+                //.attr("transform","translate(0," + height+")")
+                .call(d3.axisLeft(y));
+
+            //Add text labels
+            var xLabel = svg.append("text")
+                .attr("class", "label")
+                .text(xVal)
+                .attr("x", width - 30)
+                .attr("y", height - 10);
+            var yLabel = svg.append("text")
+                .attr("class", "label")
+                .text(yVal)
+                /*.attr("transform","rotate(90)")*/
+                .attr("text-anchor", "start")
+                .attr("x", width - 820)
+            //.attr("transform", "rotate(90)");
+
+            //            //hovering
+            //            // changes color when hovering
+            //            d3.selectAll('circle').on('mouseover', function() {
+            //                    var cir = d3.select(this);
+            //                    cir.style('fill', 'green')
+            //                        .transition()
+            //                        .attr('r', 8)
+            //                    cir.append('svg:title') //tooltip
+            //                        .text(function(d) {
+            //                            return "X: " + d['School Year'] + " " + "Y: " + d['Average HS GPA'];
+            //                        });
+            //                })
+            //                // color changes back if mouse is out
+            //                .on('mouseout', function() {
+            //                    var cir = d3.select(this);
+            //                    cir.transition()
+            //                        .duration(500)
+            //                        .style("fill", "red")
+            //                        .attr('r', 5)
+            //                    d3.select("#eText").remove();
+            //                });
+            //
+        });
+
+    </script>
+
+    <div id="partThree">
+        <h1>Part Three: </h1>
+    </div>
+
+    <script type="text/javascript">
+        d3.csv("data/Major.csv", function(error, data) {
+            //console.log(data);
+            if (error) throw error;
+            console.log(data);
+            var w = 700; // Width of our visualization
+            var h = 500; // Height of our visualization
+            var xOffset = 50; // Space for x-axis labels
+            var yOffset = 100; // Space for y-axis labels
+            var margin = 10; // Margin around visualization
+            var vals = ['Major', 'Number']; // List of data attributes
+            var xVal = vals[0]; // major to plot on x-axis
+            var yVal = vals[1]; // Number to plot on y-axis
+
+
+            // set the dimensions and margins of the graph
+            var margin = {
+                top: 20,
+                right: 20,
+                bottom: 30,
+                left: 50
+            };
+            var width = 960 - margin.left - margin.right;
+            var height = 500 - margin.top - margin.bottom;
+            var tooltip = d3.select("body").append("div").attr("class", "toolTip");
+
+            // set the ranges
+            var x = d3.scaleLinear().range([0, width]);
+            var y = d3.scaleLinear().range([height, 0]);
+
+            data.forEach(function(d, idx) {
+                d.idx = idx + 1;
+            });
+            // append the svg obgect to the body of the page
+            // appends a 'group' element to 'svg'
+            // moves the 'group' element to the top left margin
+            var svg = d3.select("#partThree").append("svg")
+                .attr("width", width + margin.left + margin.right)
+                .attr("height", height + margin.top + margin.bottom)
+                .append("g")
+                .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
+            x.domain([0, data.length + 1]);
+            // x.domain(data.map(function(d) {return d.major;}));
+            y.domain([0, d3.max(data, function(d) {
+                return parseFloat(d.Number);
+            })]);
+
+            data.sort(function(a, b) {
+                return (b.Number - a.Number);
+            });
+
+            // Add the bar
+            var div = d3.select("#partThree").append("div")
+                .attr("class", "tooltip")
+                .style("opacity", 0);
+
+            svg.selectAll('.bar')
+                .data(data)
+                .enter()
+                // .append('div')
+                .append('rect')
+                .attr('x', function(d) {
+                    return x(d.idx)
+                })
+                .attr("y", function(d) {
+                    return y(d[yVal]);
+                })
+                .attr("width", 10)
+                .attr("height", function(d) {
+                    return h - y(d.Number) - xOffset;
+                })
+                .style('fill', 'red')
+
+
+                .on('mouseover', function() { // changes color when hovering
+                    // linkConnect = d.x;
+                    var barc = d3.select(this);
+                    barc.style('fill', 'green')
+                        .transition()
+                    barc.append('svg:title') //tooltip
+                        .text(function(d) {
+                            return "Major: " + d['Major'] + " " + "Number: " + d['Number'];
+
+                        });
+                })
+                .on('mouseout', function() { // color changes back if mouse is out
+                    var barc = d3.select(this);
+                    barc.transition()
+                        .duration(500)
+                        .style("fill", "red");
+
+
+                });
+            //console.log(d[xVal]);
+            // Add the X Axis
+            svg.append("g")
+                .attr("transform", "translate(0," + height + ")")
+                .call(d3.axisBottom(x));
+
+            // Add the Y Axis
+            svg.append("g")
+                //.attr("transform","translate(0," + height+")")
+                .call(d3.axisLeft(y));
+
+            //Add text labels
+            var xLabel = svg.append("text")
+                .attr("class", "label")
+                .text(xVal)
+                .attr("x", width - 20)
+                .attr("y", height - 10);
+            var yLabel = svg.append("text")
+                .attr("class", "label")
+                .text(yVal)
+                .attr("transform", "rotate(0)")
+                .attr("text-anchor", "start");
+
+        });
+
+    </script>
+
+
+    <div id="partFour">
+        <h1>Part Four</h1>
+    </div>
+    <script type="text/javascript">
+        d3.csv("data/age.csv", function(data) {
+            console.log(data);
+
+            // if (error) throw error;
+
+            // First, we will create some constants to define non-data-related parts of the visualization
+
+            var w = 700; // Width of our visualization
+            var h = 500; // Height of our visualization
+            var xOffset = 40; // Space for x-axis labels
+            var yOffset = 100; // Space for y-axis labels
+            var margin = 10; // Margin around visualization
+            var vals = ['School Year', 'Enroll, Female: Average Age (Enrl F)']; // List of data attributes
+            var xVal = vals[0]; // Value to plot on x-axis
+            var yVal = vals[1]; // Value to plot on y-axis
+            // set the dimensions and margins of the graph
+            var margin = {
+                top: 20,
+                right: 20,
+                bottom: 30,
+                left: 50
+            };
+            var width = 960 - margin.left - margin.right;
+            var height = 500 - margin.top - margin.bottom;
+            // set the ranges
+            var x = d3.scaleLinear().range([0, width]);
+            var y = d3.scaleLinear().range([height, 0]);
+            // append the svg obgect to the body of the page
+            // appends a 'group' element to 'svg'
+            // moves the 'group' element to the top left margin
+            var svg = d3.select("#partFour").append("svg")
+                .attr("width", width + margin.left + margin.right)
+                .attr("height", height + margin.top + margin.bottom)
+                .append("g")
+                .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+            x.domain([d3.min(data, function(d) {
+                    return parseFloat(d[xVal]);
+                }),
+                d3.max(data, function(d) {
+                    return parseFloat(d[xVal]);
+                })
+            ]);
+
+            y.domain([d3.min(data, function(d) {
+                    return parseFloat(d[yVal]);
+                }),
+                d3.max(data, function(d) {
+                    return parseFloat(d[yVal]);
+                })
+            ]);
+
+            //x.domain(0,d3.max(data, function(d) { return parseFloat(d[xVal]); }));
+            //y.domain(0,d3.max(data, function(d) { return parseFloat(d[yVal]); }));
+            // Add the scatterplot points
+            svg.selectAll("circle")
+                .data(data)
+                .enter()
+                .append("circle")
+                .attr("r", 3)
+                .attr("cx", function(d) {
+                    return x(d[xVal]);
+                })
+                .attr("cy", function(d) {
+                    return y(d[yVal]);
+                })
+                .style('fill', 'red')
+                .attr('r', 0)
+                //                .transition()
+                //                .duration(500)
+                .attr('r', 5)
+                .on('mouseover', function() {
+                    var cir = d3.select(this);
+                    cir.style('fill', 'green')
+                        .transition()
+                        .attr('r', 8)
+                    cir.append('svg:title') //tooltip
+                        .text(function(d) {
+                            return "X: " + d['School Year'] + " " + "Y: " + d['Enroll, Female: Average Age (Enrl F)'];
+                        });
+                })
+                // color changes back if mouse is out
+                .on('mouseout', function() {
+                    var cir = d3.select(this);
+                    cir.transition()
+                        .duration(500)
+                        .style("fill", "red")
+                        .attr('r', 5)
+                    d3.select("#eText").remove();
+                });
+
+
+
+
+
+            // Add the X Axis
+            svg.append("g")
+                .attr("transform", "translate(0," + height + ")")
+                .call(d3.axisBottom(x));
+
+            // Add the Y Axis
+            svg.append("g")
+                //.attr("transform","translate(0," + height+")")
+                .call(d3.axisLeft(y));
+            //Add text labels
+            var xLabel = svg.append("text")
+                .attr("class", "label")
+                .text(xVal)
+                .attr("x", width - 30)
+                .attr("y", height - 10);
+            var yLabel = svg.append("text")
+                .attr("class", "label")
+                .text(yVal)
+                //.attr("transform","rotate(90)")
+                .attr("text-anchor", "start")
+                .attr("x", width - 750)
+            //.attr("transform","rotate(90)");
+        });
+
+    </script>
+
+    <div id="partFive">
+        <h1>Part Five: </h1>
+    </div>
+
+    <script type="text/javascript">
+        d3.csv("data/SAT.csv", function(data) {
+
+            // console.log(data);
+
+            // if (error) throw error;
+
+            // First, we will create some constants to define non-data-related parts of the visualization
+
+            var w = 700; // Width of our visualization
+            var h = 500; // Height of our visualization
+            var xOffset = 40; // Space for x-axis labels
+            var yOffset = 100; // Space for y-axis labels
+            var margin = 10; // Margin around visualization
+            var vals = ['Enroll, Female: Avg. SAT Math Score (Enrl F)', 'Enroll, Male: Avg. SAT Math Score (Enrl M)']; // List of data attributes
+            var xVal = vals[0]; // Value to plot on x-axis
+            var yVal = vals[1]; // Value to plot on y-axis
+
+
+            // set the dimensions and margins of the graph
+            var margin = {
+                top: 20,
+                right: 20,
+                bottom: 30,
+                left: 50
+            };
+            var width = 960 - margin.left - margin.right;
+            var height = 500 - margin.top - margin.bottom;
+
+            // set the ranges
+            var x = d3.scaleLinear().range([0, width]);
+            var y = d3.scaleLinear().range([height, 0]);
+
+
+            // append the svg obgect to the body of the page
+            // appends a 'group' element to 'svg'
+            // moves the 'group' element to the top left margin
+            var svg = d3.select("#partFive").append("svg")
+                .attr("width", width + margin.left + margin.right)
+                .attr("height", height + margin.top + margin.bottom)
+                .append("g")
+                .attr("transform", "translate(" + margin.left + "," + margin.top + ")")
+
+
+            x.domain([d3.min(data, function(d) {
+                    return parseFloat(d[xVal]);
+                }),
+                d3.max(data, function(d) {
+                    return parseFloat(d[xVal]);
+                })
+            ]);
+
+            y.domain([d3.min(data, function(d) {
+                    return parseFloat(d[yVal]);
+                }),
+                d3.max(data, function(d) {
+                    return parseFloat(d[yVal]);
+                })
+            ]);
+
+            //x.domain(0,d3.max(data, function(d) { return parseFloat(d[xVal]); }));
+            //y.domain(0,d3.max(data, function(d) { return parseFloat(d[yVal]); }));
+
+
+            // data.sort(function(a,b) {return a.x-b.x});
+
+
+
+
+            // Add the scatterplot points
+            svg.selectAll("circle")
+                .data(data)
+                .enter()
+                .append("circle")
+                .attr("r", 3)
+                .attr("cx", function(d) {
+                    return x(d[xVal]);
+                })
+                .attr("cy", function(d) {
+                    return y(d[yVal]);
+                })
+                .style('fill', 'red')
+                .attr('r', 0)
+                //                           .transition()
+                //                           .duration(500)
+                .attr('r', 5)
+                .on('mouseover', function() { // changes color when hovering
+                    var cir = d3.select(this);
+                    cir.style('fill', 'green')
+                        .transition()
+                        .attr('r', 8)
+                    cir.append('svg:title') //tooltip
+                        .text(function(d) {
+                            return "X: " + d['Enroll, Female: Avg. SAT Math Score (Enrl F)'] + " " + "Y: " + d['Enroll, Male: Avg. SAT Math Score (Enrl M)'];
+                        });
+                })
+                .on('click', function(d) { // changes color when hovering
+                    var cirLabel = svg.append("text")
+                        .attr('class', 'label')
+                        .attr("id", "eText")
+                        .attr('x', xOffset / 2 + 310)
+                        .attr('y', h / 2 - 220)
+                        .transition()
+                        .text("coordinates: " + d['Enroll, Female: Avg. SAT Math Score (Enrl F)'] + " , " + d['Enroll, Male: Avg. SAT Math Score (Enrl M)']); //click the point and show coordinates.
+                })
+                .on('mouseout', function() { // color changes back if mouse is out
+                    var cir = d3.select(this);
+                    cir.transition()
+                        .duration(500)
+                        .style("fill", "red")
+                        .attr('r', 5)
+                    d3.select("#eText").remove();
+                });
+
+
+
+
+            // Add the X Axis
+            svg.append("g")
+                .attr("transform", "translate(0," + height + ")")
+                .call(d3.axisBottom(x));
+
+            // Add the Y Axis
+            svg.append("g")
+                //.attr("transform","translate(0," + height+")")
+                .call(d3.axisLeft(y));
+
+
+
+
+            // Add text labels
+            var xLabel = svg.append("text")
+                .attr("class", "label")
+                .text(xVal)
+                .attr("x", width - 150)
+                .attr("y", height - 10);
+
+
+            var yLabel = svg.append("text")
+                .attr("class", "label")
+                .text(yVal)
+                .attr("x", width - 780)
+                .attr("y", height - 458)
+                .attr("transform", "rotate(0)")
+                .attr("text-anchor", "start");
+            // .attr("x",width -180)
+            // .attr("y", height -10);
+            // .attr("Enroll, Male: Avg. ACT Math Score (Enrl M)", height -40);
+
+            var y1 = data.map(function(d) {
+                return parseFloat(d[xVal]);
+            });
+
+            var x1 = data.map(function(d) {
+                return parseFloat(d[yVal]);
+            });
+
+
+
+
+
+
+            var lr = {};
+            var n = y1.length;
+            var r = 0;
+            var rpart;
+
+            var xmean = d3.mean(data, function(d) {
+                return d[xVal];
+            });
+
+            //            console.log(xmean);
+            var ymean = d3.mean(data, function(d) {
+                return d[yVal];
+            });
+            var xstd = d3.deviation(data, function(d) {
+                return d[xVal];
+            });
+            var ystd = d3.deviation(data, function(d) {
+                return d[yVal];
+            });
+
+
+
+            for (var i = 0; i < y1.length; i++) {
+
+                rpart = (x1[i] - xmean) * (y1[i] - ymean) / xstd / ystd;
+                var r = r + rpart;
+            }
+            var r1 = r / (y1.length - 1)
+
+            lr['slope'] = r1 * (ystd / xstd);
+            lr['intercept'] = ymean - lr.slope * xmean;
+
+
+
+
+            console.log(lr);
+            var max = d3.max(data, function(d) {
+                return parseFloat(d[xVal]);
+            })
+            var myLine = svg.append("svg:line")
+                .attr("x1", x(0))
+                .attr("y1", y(lr.intercept))
+                .attr("x2", x(max))
+                .attr("y2", y((max * lr.slope) + lr.intercept))
+                .style("stroke", "black");
+        });
+
+    </script>
+
+
+
+
+
+</body>
+
+</html>
